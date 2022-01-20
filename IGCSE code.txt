@@ -1,0 +1,110 @@
+basicCost ← 200
+categories ← ["Case", "Case", "RAM", "RAM", "RAM", "Main harddrive", "Main harddrive", "Main harddrive", "Solid State Dives", "Solid State Dives", "Secondary harddrive", "Secondary harddrive", "Secondary harddrive", "Optical Drive", "Optical Drive", "Operating system", "Operating system", "Operating system" ]
+itemCodes ← ["A1", "A2", "B1", "B2", "B3", "C1", "C2", "C3", "D1", "D2", "E1", "E2", "E3", "F1", "F2", "G1", "G2", "G3"]
+descriptions ← ["Compact", "Tower", "8 GB", "16 GB", "32 GB", "1 TB HDD", "2 TB HDD", "4 TB HDD", "240 GB SSD", "480 GB SSD", "1 TB HDD", "2 TB HDD", "4 TB HDD", "DVD/Blu-Ray player", "DVD/Blu-Ray Re-writer", "Standard version", "Professional version", "None"]
+prices ← [75, 150, 79.99, 149.99, 299.99, 49.99, 89.99, 129.99, 59.99, 119.99, 49.99, 89.99, 129.99, 50, 100, 100, 175, 0]
+totalItems ← 18
+cost ← basicCost
+
+
+//Finds position of items
+FUNCTION findPosition (code)
+    FOR i ← 1 TO totalItems
+        IF code = itemCodes[i]
+          THEN 
+            position ← i
+        ENDIF
+    NEXT i
+    RETURN position
+ENDFUNCTION
+
+
+//Menu
+OUTPUT "Categories | Codes | Descriptions | Prices"
+FOR i ← 1 TO totalItems
+    OUTPUT categories[i] + " " + itemCodes[i] + " " + descriptions[i] + " " + prices[i]
+NEXT i
+
+
+//Case
+OUTPUT "Pick a case"
+INPUT case
+WHILE case[1] <> A OR case[2] > 2 OR case[2] < 1 DO
+    OUTPUT "Incorrect item code, please check your entry and try again"
+    INPUT case
+ENDWHILE
+position ← findPosition(case)
+myChoices[1] ← descriptions[position] + " " + categories[position]
+myPrices[1] ← prices[position]
+cost ← cost + prices[position]
+
+
+//RAM
+OUTPUT "Pick RAM"
+INPUT ram
+WHILE ram[1] <> B OR ram[2] > 3 OR ram[2] < 1 DO
+    OUTPUT "Incorrect item code, please check your entry and try again"
+    INPUT ram
+ENDWHILE
+position ← findPosition(ram)
+myChoices[2] ← descriptions[position] + " " + categories[position]
+myPrices[2] ← prices[position]
+cost ← cost + prices[position]
+
+
+//Hard Drive
+OUTPUT "Pick a main hard drive"
+INPUT mdrive
+WHILE mdrive[1] <> C OR mdrive[2] < 1 OR mdrive[2] > 3 DO
+    OUTPUT "Incorrect item code, please check your entry and try again"
+    INPUT mdrive
+ENDWHILE
+position ← findPosition(mdrive)
+myChoices[3] ← descriptions[position] + " " + categories[position]
+myPrices[3] ← prices[position]
+cost ← cost + prices[position]
+
+
+//Displays basic selection of items
+OUTPUT "You picked:"
+FOR i ← 1 TO 3
+    OUTPUT myChoices[i] + " $" + myPrices[i]
+NEXT i
+OUTPUT "The total cost is", cost
+
+
+//Entering of extra items
+OUTPUT "Enter the code of any extra items you would like (XX to finish order)"
+count ← 3
+disCount ← 0
+INPUT extra
+WHILE extra <> XX DO
+    disCount ← disCount + 1
+    count ← count + 1
+    position = findPosition[extra]
+    cost ← cost + prices[position]
+    myChoices[count] ← descriptions[position] + " " + categories[position]
+    myPrices[count] ← prices[position]
+    OUTPUT "Item successfully added. Enter the code of any extra items you would like (XX to finish order)"
+    INPUT extra
+ENDWHILE
+
+
+//Calculates discount
+IF disCount = 1
+  THEN
+    discount ← 5
+  ELSE
+    IF disCount > 1 
+      THEN
+        discount ← 10
+  ENDIF
+ENDIF
+
+
+//Final selection display
+OUTPUT "Final list of components and items:"
+FOR i ← 1 TO count
+    OUTPUT myChoices[i] + " $" + myPrices[i]
+NEXT i
+OUTPUT "Total cost:" cost
